@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operação Ossos Sob Investigação</title>
+<style>
+:root{--bg:#08111d;--panel:#111f30;--panel2:#172a3e;--line:#29445c;--text:#edf4fa;--muted:#a9bdce;--cyan:#65d6e8;--red:#e45c65;--gold:#e7b85c;--green:#63d49a}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 80% 0%,#17344b 0,transparent 34%),linear-gradient(135deg,#07101b,#0c1827 60%,#101d2b);color:var(--text);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;min-height:100vh}
+header{padding:22px 18px 16px;border-bottom:1px solid var(--line);background:#07111ddd}
+.top{max-width:980px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-size:.78rem;letter-spacing:.18em;color:var(--cyan);font-weight:800}.case{font-size:.75rem;color:var(--gold);border:1px solid #80683d;padding:5px 9px;border-radius:4px;letter-spacing:.1em}
+main{max-width:980px;margin:28px auto;padding:0 16px 44px}
+h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:12px 0;color:#fff;letter-spacing:-.04em}
+h2{font-size:1.45rem;margin:0 0 10px}h3{margin:0 0 8px;color:var(--cyan)}
+p{color:var(--muted)}.eyebrow{font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:800}
+.panel{background:linear-gradient(145deg,#14263a,#0e1b2b);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,4vw,30px);box-shadow:0 16px 50px #0004;margin-bottom:18px}
+.hero{position:relative;overflow:hidden}.hero:after{content:"026";position:absolute;right:18px;bottom:-32px;font-size:9rem;font-weight:900;color:#ffffff08;pointer-events:none}
+.stamp{display:inline-block;color:var(--red);border:2px solid var(--red);padding:4px 9px;transform:rotate(-3deg);font-size:.7rem;font-weight:900;letter-spacing:.13em}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+button{border:0;border-radius:8px;padding:12px 18px;font-weight:800;cursor:pointer;font-size:.95rem;transition:.15s}
+button:hover{transform:translateY(-1px);filter:brightness(1.08)}button:focus-visible,.option:focus-within{outline:3px solid var(--gold);outline-offset:3px}
+.primary{background:var(--cyan);color:#06202a}.secondary{background:#20374d;color:var(--text);border:1px solid #42617a}.danger{background:#5a2630;color:#fff;border:1px solid #a84a55}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.stat{background:#0b1827;border:1px solid var(--line);border-radius:9px;padding:12px}.stat b{display:block;font-size:1.25rem;color:#fff}.stat small{color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-size:.68rem}
+.progress{height:8px;background:#07111c;border-radius:99px;overflow:hidden;margin:12px 0 20px;border:1px solid var(--line)}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width .3s}
+.phase-list{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:18px 0}
+.phase-chip{border:1px solid var(--line);border-radius:8px;padding:9px 5px;text-align:center;color:var(--muted);font-size:.72rem;background:#0b1827}
+.phase-chip.active{border-color:var(--cyan);color:var(--cyan);background:#123044}.phase-chip.done{border-color:var(--green);color:var(--green)}
+.phase-no{display:block;font-weight:900;font-size:1rem}
+.evidence{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:18px}
+.tag{font-size:.7rem;color:var(--gold);border:1px solid #80683d;padding:4px 8px;border-radius:4px;white-space:nowrap}
+.question{font-size:1.08rem;color:#fff;font-weight:750;margin:12px 0}
+.options{display:grid;gap:9px;margin:14px 0 20px}
+.option{display:flex;gap:11px;align-items:flex-start;background:#0a1725;border:1px solid #29445c;padding:12px;border-radius:9px;cursor:pointer;color:var(--text)}
+.option:hover{border-color:var(--cyan)}.option input{margin-top:5px;accent-color:var(--cyan);transform:scale(1.15)}
+.feedback{padding:12px 14px;border-radius:8px;margin:12px 0;border:1px solid var(--line);background:#0a1725}
+.feedback.good{border-color:#367e60;color:#b9f4d4}.feedback.bad{border-color:#9b4650;color:#ffd0d3}
+.hidden{display:none!important}.note{font-size:.85rem;color:var(--muted)}
+.final-score{font-size:3.4rem;font-weight:900;color:var(--cyan);line-height:1}
+footer{text-align:center;color:#6f879b;font-size:.75rem;padding:20px}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.phase-list{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.phase-chip{font-size:.58rem;padding:7px 2px}.phase-no{font-size:.85rem}.panel{padding:17px}}
+@media print{body{background:white;color:#111}.panel{box-shadow:none;background:white;color:#111;border:1px solid #999}p,.note{color:#333}button{display:none}}
+</style>
+</head>
+<body>
+<header><div class="top"><div><div class="brand">LABORATÓRIO DE ANTROPOLOGIA FORENSE</div><div style="font-weight:800;letter-spacing:.06em">UNIDADE DE CIÊNCIAS • ARQUIVO 026</div></div><div class="case">CASO CONFIDENCIAL</div></div></header>
+<main>
+<section id="intro" class="panel hero">
+  <div class="eyebrow">Dossiê de investigação científica</div>
+  <div class="stamp">ACESSO AUTORIZADO</div>
+  <h1>OPERAÇÃO<br><span style="color:var(--cyan)">OSSOS SOB INVESTIGAÇÃO</span></h1>
+  <p>Um esqueleto didático foi desmontado e suas peças foram espalhadas pelo laboratório. Dez evidências foram deixadas para trás. Sua equipe deverá analisar as pistas e demonstrar que conhece o sistema esquelético.</p>
+  <div class="stats">
+    <div class="stat"><b>05</b><small>Fases</small></div><div class="stat"><b>10</b><small>Questões</small></div><div class="stat"><b>1 ponto</b><small>Por acerto</small></div>
+  </div>
+  <h3>Missão do investigador</h3>
+  <p>Leia cada evidência, escolha uma resposta e confirme a fase. Você receberá um relatório com o resultado de cada questão. Ao concluir as cinco fases, o código do caso será liberado.</p>
+  <p class="note">Atividade de revisão • 6º ano • Tempo sugerido: 40–50 minutos</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:18px">
+    <label style="display:grid;gap:6px;color:var(--muted);font-size:.9rem">Nome do aluno
+      <input id="studentName" autocomplete="name" placeholder="Digite seu nome" style="padding:12px;border-radius:8px;border:1px solid var(--line);background:#081522;color:white;font:inherit">
+    </label>
+    <label style="display:grid;gap:6px;color:var(--muted);font-size:.9rem">Turma
+      <input id="studentClass" placeholder="Ex.: 6º A" style="padding:12px;border-radius:8px;border:1px solid var(--line);background:#081522;color:white;font:inherit">
+    </label>
+  </div>
+  <p class="note">Seus dados serão usados somente para identificar sua atividade e registrar sua pontuação para o professor.</p>
+  <div class="actions"><button class="primary" onclick="startGame()">INICIAR INVESTIGAÇÃO →</button></div>
+</section>
+
+<section id="game" class="hidden">
+  <div class="stats">
+    <div class="stat"><b id="score">0/10</b><small>Pontuação</small></div>
+    <div class="stat"><b id="phaseCount">1/5</b><small>Fase atual</small></div>
+    <div class="stat"><b id="answered">0/10</b><small>Respondidas</small></div>
+  </div>
+  <div class="progress"><div id="progressBar" class="bar"></div></div>
+  <div class="phase-list" id="phaseList"></div>
+  <div class="panel">
+    <div class="evidence"><div><div class="eyebrow" id="phaseEyebrow">FASE 01</div><h2 id="phaseTitle">Análise inicial</h2></div><span class="tag" id="phaseTag">EVIDÊNCIAS 01–02</span></div>
+    <p id="story"></p>
+    <div id="questionArea"></div>
+    <div id="phaseFeedback" class="hidden"></div>
+    <div class="actions">
+      <button id="checkBtn" class="primary" onclick="checkPhase()">ANALISAR EVIDÊNCIAS</button>
+      <button id="nextBtn" class="primary hidden" onclick="nextPhase()">AVANÇAR PARA A PRÓXIMA FASE →</button>
+    </div>
+    <p class="note" id="instruction">Selecione uma alternativa em cada questão antes de analisar as evidências.</p>
+  </div>
+</section>
+
+<section id="final" class="hidden">
+  <div class="panel hero">
+    <div class="stamp">CASO ENCERRADO</div>
+    <div class="eyebrow">Relatório final da investigação</div>
+    <h1>INVESTIGAÇÃO<br><span style="color:var(--cyan)">CONCLUÍDA</span></h1>
+    <div class="final-score" id="finalScore">0/10</div>
+    <h2 id="finalTitle">Relatório do investigador</h2>
+    <p id="finalMessage"></p>
+    <div id="finalDetails"></div>
+    <div id="submissionStatus" class="feedback">Preparando envio do resultado...</div>
+    <div class="actions"><button class="primary" onclick="restart()">↻ JOGAR NOVAMENTE</button><button class="secondary" onclick="window.print()">IMPRIMIR RELATÓRIO</button></div>
+  </div>
+  <div class="panel"><h2>Conclusão científica</h2><p>O sistema esquelético sustenta o corpo, protege órgãos, participa dos movimentos, armazena minerais e, por meio da medula óssea vermelha, contribui para a produção das células sanguíneas. Ossos, articulações e músculos atuam em conjunto.</p></div>
+</section>
+</main>
+<footer>OPERAÇÃO OSSOS SOB INVESTIGAÇÃO • MATERIAL DIDÁTICO DE CIÊNCIAS • 6º ANO</footer>
+<script>
+const phases = [
+ {title:"A cena do laboratório",tag:"EVIDÊNCIAS 01–02",story:"A equipe chegou ao laboratório e encontrou as primeiras pistas. Antes de identificar peças isoladas, é preciso compreender o trabalho geral do sistema esquelético e sua função de proteção.",qs:[
+  {n:1,title:"O primeiro relatório",text:"Qual alternativa apresenta três funções importantes do sistema esquelético?",opts:["Sustentar o corpo, proteger órgãos internos e participar dos movimentos.","Realizar a digestão, produzir saliva e controlar a respiração.","Transportar alimentos, produzir hormônios e bombear sangue.","Armazenar ar, produzir energia e controlar os sentidos."],a:0,why:"O esqueleto sustenta o corpo, protege órgãos e, junto aos músculos e às articulações, participa dos movimentos."},
+  {n:2,title:"A proteção do cérebro",text:"Os investigadores encontraram a estrutura óssea que protege o cérebro. Qual é ela?",opts:["Fêmur.","Crânio.","Úmero.","Costela."],a:1,why:"O crânio envolve e protege o cérebro."}
+ ]},
+ {title:"Identificação dos ossos",tag:"EVIDÊNCIAS 03–04",story:"Duas imagens foram anexadas ao arquivo: uma mostra um osso da coxa; a outra, a estrutura que protege órgãos do tórax. Identifique corretamente as evidências.",qs:[
+  {n:3,title:"O maior osso",text:"Qual é o maior e mais longo osso do corpo humano?",opts:["Fêmur.","Rádio.","Esterno.","Mandíbula."],a:0,why:"O fêmur fica na coxa e é o maior e mais longo osso do corpo humano."},
+  {n:4,title:"A caixa de proteção",text:"Qual estrutura óssea protege o coração e os pulmões?",opts:["Crânio.","Pelve.","Caixa torácica.","Coluna cervical."],a:2,why:"A caixa torácica, formada principalmente pelas costelas e pelo esterno, protege órgãos como o coração e os pulmões."}
+ ]},
+ {title:"A estrutura da coluna",tag:"EVIDÊNCIAS 05–06",story:"Na sequência, a equipe encontrou uma fileira de pequenos ossos nas costas e observou regiões onde os ossos se encontram. Essas pistas ajudam a explicar a sustentação e os movimentos do corpo.",qs:[
+  {n:5,title:"A coluna misteriosa",text:"A coluna vertebral é formada por pequenos ossos chamados:",opts:["Falanges.","Vértebras.","Costelas.","Tarsos."],a:1,why:"A coluna vertebral é formada por vértebras, que ajudam a sustentar o corpo e proteger a medula espinhal."},
+  {n:6,title:"A conexão dos ossos",text:"Os investigadores observaram regiões onde dois ou mais ossos se encontram. Como são chamadas essas regiões?",opts:["Tendões.","Articulações.","Músculos.","Cartilagens."],a:1,why:"Articulações são regiões de união entre ossos. Muitas permitem movimentos; outras têm movimento limitado ou não se movimentam."}
+ ]},
+ {title:"O laboratório interno",tag:"EVIDÊNCIAS 07–08",story:"Uma amostra do interior de um osso e um relatório de anatomia chegaram à bancada. Agora, os investigadores precisam reconhecer uma função interna dos ossos e um dado geral sobre o esqueleto adulto.",qs:[
+  {n:7,title:"O laboratório interno",text:"Qual é uma função da medula óssea vermelha?",opts:["Produzir células do sangue.","Produzir movimentos.","Proteger o cérebro.","Armazenar ar."],a:0,why:"A medula óssea vermelha produz células sanguíneas, como glóbulos vermelhos, alguns glóbulos brancos e plaquetas."},
+  {n:8,title:"O número secreto",text:"Quantos ossos possui, geralmente, o esqueleto de uma pessoa adulta?",opts:["106 ossos.","150 ossos.","206 ossos.","300 ossos."],a:2,why:"O esqueleto humano adulto tem geralmente 206 ossos. A quantidade pode variar um pouco entre indivíduos."}
+ ]},
+ {title:"A prova do movimento",tag:"EVIDÊNCIAS 09–10",story:"A última pasta contém a classificação de um osso e uma gravação de uma pessoa caminhando. Resolva as duas últimas pistas para fechar o caso.",qs:[
+  {n:9,title:"Classificação óssea",text:"As costelas são classificadas, quanto ao formato, como ossos:",opts:["Longos.","Planos.","Curtos.","Irregulares."],a:1,why:"As costelas são exemplos de ossos planos, que têm formato achatado."},
+  {n:10,title:"O movimento final",text:"Quais estruturas trabalham juntas para permitir movimentos como caminhar?",opts:["Somente os ossos, sem participação de outras estruturas.","Ossos, músculos e articulações.","Somente as articulações.","Ossos e pulmões."],a:1,why:"Os músculos se contraem e movimentam os ossos nas articulações. Essas estruturas atuam em conjunto."}
+ ]}
+];
+// Depois de publicar o Apps Script, cole aqui o URL do aplicativo da Web.
+const GOOGLE_SCRIPT_URL = "COLE_AQUI_O_URL_DO_APPS_SCRIPT";
+let phaseIndex=0,answers={},checked=false,student={name:"",className:""},submissionStarted=false;
+function startGame(){
+ student.name=document.getElementById('studentName').value.trim();
+ student.className=document.getElementById('studentClass').value.trim();
+ if(!student.name || !student.className){alert("Preencha seu nome e sua turma antes de iniciar.");return;}
+ submissionStarted=false;
+ document.getElementById('intro').classList.add('hidden');document.getElementById('final').classList.add('hidden');document.getElementById('game').classList.remove('hidden');phaseIndex=0;answers={};checked=false;renderPhase();window.scrollTo({top:0,behavior:'smooth'});}
+function renderPhase(){
+ const p=phases[phaseIndex];checked=false;
+ document.getElementById('phaseEyebrow').textContent=`FASE 0${phaseIndex+1} • INVESTIGAÇÃO`;
+ document.getElementById('phaseTitle').textContent=p.title;
+ document.getElementById('phaseTag').textContent=p.tag;
+ document.getElementById('story').textContent=p.story;
+ document.getElementById('phaseCount').textContent=`${phaseIndex+1}/5`;
+ document.getElementById('questionArea').innerHTML=p.qs.map(q=>`<div class="question-block"><div class="evidence"><h3>EVIDÊNCIA ${String(q.n).padStart(2,'0')} — ${q.title}</h3><span class="tag">1 PONTO</span></div><div class="question">${q.text}</div><div class="options">${q.opts.map((o,i)=>`<label class="option"><input type="radio" name="q${q.n}" value="${i}"><span><b>${String.fromCharCode(65+i)})</b> ${o}</span></label>`).join('')}</div><div id="feedback${q.n}" class="hidden"></div></div>`).join('<hr style="border:0;border-top:1px solid var(--line);margin:24px 0">');
+ document.getElementById('phaseFeedback').classList.add('hidden');document.getElementById('checkBtn').classList.remove('hidden');document.getElementById('nextBtn').classList.add('hidden');document.getElementById('instruction').textContent='Selecione uma alternativa em cada questão antes de analisar as evidências.';
+ renderProgress();
+}
+function renderProgress(){
+ let score=Object.entries(answers).filter(([n,v])=>v.correct).length;
+ document.getElementById('score').textContent=`${score}/10`;
+ document.getElementById('answered').textContent=`${Object.keys(answers).length}/10`;
+ document.getElementById('progressBar').style.width=(Object.keys(answers).length*10)+'%';
+ document.getElementById('phaseList').innerHTML=phases.map((p,i)=>`<div class="phase-chip ${i===phaseIndex?'active':i<phaseIndex?'done':''}"><span class="phase-no">${i<phaseIndex?'✓':'0'+(i+1)}</span>${['Cena','Ossos','Coluna','Medula','Movimento'][i]}</div>`).join('');
+}
+function checkPhase(){
+ const p=phases[phaseIndex];let missing=[];
+ p.qs.forEach(q=>{let selected=document.querySelector(`input[name="q${q.n}"]:checked`);if(!selected)missing.push(q.n);});
+ if(missing.length){document.getElementById('instruction').textContent='Falta responder à(s) evidência(s): '+missing.join(', ')+'.';return;}
+ p.qs.forEach(q=>{
+  const val=Number(document.querySelector(`input[name="q${q.n}"]:checked`).value),correct=val===q.a;
+  answers[q.n]={choice:val,correct};
+  const box=document.getElementById('feedback'+q.n);box.className='feedback '+(correct?'good':'bad');box.innerHTML=`<b>${correct?'✓ Evidência confirmada!':'✕ Evidência não confirmada.'}</b> ${correct?'Resposta correta.':'Resposta correta: '+String.fromCharCode(65+q.a)+'.'}<br>${q.why}`;
+  document.querySelectorAll(`input[name="q${q.n}"]`).forEach(el=>el.disabled=true);
+ });
+ checked=true;renderProgress();
+ document.getElementById('checkBtn').classList.add('hidden');
+ document.getElementById('nextBtn').classList.remove('hidden');
+ document.getElementById('nextBtn').textContent=phaseIndex===4?'ENCERRAR INVESTIGAÇÃO →':'AVANÇAR PARA A PRÓXIMA FASE →';
+ document.getElementById('instruction').textContent='Leia o retorno científico de cada evidência. Depois, avance para continuar a investigação.';
+}
+function nextPhase(){if(phaseIndex<4){phaseIndex++;renderPhase();window.scrollTo({top:0,behavior:'smooth'});}else showFinal();}
+function showFinal(){
+ document.getElementById('game').classList.add('hidden');document.getElementById('final').classList.remove('hidden');
+ const score=Object.values(answers).filter(x=>x.correct).length;
+ document.getElementById('finalScore').textContent=score+'/10';
+ let title,msg;
+ if(score===10){title='Mestre da investigação!';msg='Todas as evidências foram interpretadas corretamente. Você demonstrou excelente domínio do sistema esquelético.';}
+ else if(score>=8){title='Especialista em anatomia!';msg='Caso praticamente solucionado! Você demonstrou ótimo conhecimento. Revise as evidências que ainda geraram dúvidas.';}
+ else if(score>=5){title='Investigador em desenvolvimento';msg='Você reuniu pistas importantes. Retome as explicações e revise os conceitos que precisam de mais atenção.';}
+ else{title='Investigador em treinamento';msg='Toda investigação exige estudo. Releia as explicações científicas, revise o conteúdo e tente novamente.';}
+ document.getElementById('finalTitle').textContent=title;
+ document.getElementById('finalMessage').textContent=`${student.name} (${student.className}): ${msg}`;
+ document.getElementById('finalDetails').innerHTML='<h3>Resumo das evidências</h3>'+phases.flatMap(p=>p.qs).map(q=>`<div class="feedback ${answers[q.n].correct?'good':'bad'}"><b>Questão ${q.n}: ${answers[q.n].correct?'Acerto':'Revisar'}</b> — ${q.title}<br><span style="color:var(--muted)">Resposta correta: ${String.fromCharCode(65+q.a)}) ${q.opts[q.a]}</span></div>`).join('');
+ document.getElementById('submissionStatus').textContent='Enviando seu resultado para o professor...';
+ sendResult(score);
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function sendResult(score){
+ const status=document.getElementById('submissionStatus');
+ if(submissionStarted)return;
+ submissionStarted=true;
+ if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("COLE_AQUI")){
+   status.className='feedback bad';
+   status.textContent='O jogo ainda não está conectado à planilha do professor. Seu resultado aparece nesta tela, mas não foi enviado. O professor precisa configurar o endereço do Apps Script.';
+   return;
+ }
+ const payload={
+   nome:student.name,turma:student.className,pontos:score,nota:score,
+   total:10,percentual:score*10,
+   respostas:phases.flatMap(p=>p.qs).map(q=>({questao:q.n,respostaMarcada:String.fromCharCode(65+answers[q.n].choice),correta:answers[q.n].correct,respostaCorreta:String.fromCharCode(65+q.a)})),
+   dataHora:new Date().toISOString()
+ };
+ fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+   .then(()=>{status.className='feedback good';status.textContent='Resultado enviado! Se a conexão e a configuração estiverem corretas, sua pontuação foi registrada para o professor.';})
+   .catch(()=>{status.className='feedback bad';status.textContent='Não foi possível confirmar o envio. Verifique sua conexão e avise o professor.';});
+}
+function restart(){document.getElementById('final').classList.add('hidden');document.getElementById('intro').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+</script>
+</body></html>
